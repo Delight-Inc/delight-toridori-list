@@ -1,28 +1,69 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
 import taberogu_list
+import const
 
 class Taberogu:
-    def __init__(self) -> None:
+    def __init__(self, area: str, genre: str) -> None:
+        self.area = area
+        self.genre = genre
         self.driver = webdriver.Chrome()
         self.driver.get('https://tabelog.com/tokyo')
         assert '食べログ' in self.driver.title
 
     def page_length(self) -> int:
+        print(self.driver.current_url)
         return len(self.driver.find_elements(By.CLASS_NAME, "c-pagination__item"))
+    
+    def define_area(area: str) -> str:
+        if area == "tokyo":
+            return const.TOKYO
+        elif area == "osaka":
+            return const.OSAKA
+        elif area == "nagoya":
+            return const.NAGOYA
+        elif area == "sapporo":
+            return const.SAPPORO
+        elif area == "kanagawa":
+            return const.KANAGAWA
+        elif area == "hyogo":
+            return const.HYOGO
+        else:
+            return ""
+    
+    def specify_search_info(self) -> None:
+        print(self.area)
+        print(self.genre)
+        if self.area == "tokyo" and self.genre == const.ALL:
+            return
 
-    def search(self, page: int) -> list[taberogu_list.TaberoguList]:
+        self.driver.find_element(By.CLASS_NAME, "sc-fLcnxK").click()
+
+        self.driver.find_element(By.ID, "detailedSearchModalPrefecture").click()
+        prefecture_list = self.driver.find_element(By.ID, "detailedSearchModalPrefecture")
+        select = Select(prefecture_list)
+        select.select_by_visible_text(Taberogu.define_area(self.area))
+
+        self.driver.find_element(By.ID, "detailedSearchModalCategory0").click()
+        genre_list = self.driver.find_element(By.ID, "detailedSearchModalCategory0")
+        select = Select(genre_list)
+        select.select_by_visible_text(self.genre)
+
+        self.driver.find_element(By.CLASS_NAME, "sc-kDvujY").click()
+    
+    def get_shop_name_list(self, page: int) -> list[str]:
         if page != 1:
-            self.driver.get(f'https://tabelog.com/tokyo/rstLst/{page}')
+            self.driver.get('https://tabelog.com/{self.area}/rstLst/{page}')
 
         shop_list = self.driver.find_elements(By.CLASS_NAME, "list-rst__rst-name-target")
-
         shop_link_list = []
         for shop in shop_list:
             shop_link_list.append(shop.get_attribute('href'))
+        
+        return shop_link_list
 
+    def get_shop_info(self, shop_link_list: list[str]) -> list[taberogu_list.TaberoguList]:
         instagram_link_list = []
         for link in shop_link_list:
             self.driver.get(link)
