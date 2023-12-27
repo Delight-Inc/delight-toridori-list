@@ -51,10 +51,17 @@ class Taberogu:
         select.select_by_visible_text(self.genre)
 
         self.driver.find_element(By.CLASS_NAME, "sc-kDvujY").click()
+
+    def get_page_url(self, current_page: int) -> str:
+        page_url = self.driver.find_elements(By.CLASS_NAME, "c-pagination__num")
+        for url in page_url:
+            if url.text == str(current_page + 1):
+                return url.get_attribute('href')
+        return ""
     
-    def get_shop_name_list(self, page: int) -> list[str]:
-        if page != 1:
-            self.driver.get('https://tabelog.com/{self.area}/rstLst/{page}')
+    def get_shop_name_list(self, page_url: str) -> list[str]:
+        if page_url != "1":
+            self.driver.get(page_url) 
 
         shop_list = self.driver.find_elements(By.CLASS_NAME, "list-rst__rst-name-target")
         shop_link_list = []
@@ -73,7 +80,7 @@ class Taberogu:
                     shop_name = self.driver.find_element(By.CLASS_NAME, "rstinfo-table__name-wrap").text
                     tel_number = self.driver.find_element(By.CLASS_NAME, "rstinfo-table__tel-num").text
                     address = self.driver.find_element(By.CLASS_NAME, "rstinfo-table__address").text
-                    genre = self.driver.find_element(By.CLASS_NAME, "rdheader-subinfo__item-text").text
+                    genre = self.driver.find_elements(By.CLASS_NAME, "rdheader-subinfo__item")[2].text.split('ジャンル：')
                     business_hours = self.driver.find_element(By.CLASS_NAME, "rstinfo-table__subject-text").text
                     opened_date = self.driver.find_element(By.CLASS_NAME, "rstinfo-opened-date").text
 

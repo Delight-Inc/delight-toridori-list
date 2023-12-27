@@ -30,21 +30,26 @@ def main():
     taberogu = taberogu_search.Taberogu(area, define_genre(genre=genre))
     taberogu.specify_search_info()
     print(taberogu.page_length())
-    # # taberogu_page_length = taberogu.page_length()
-    # # range(1, taberogu_page_length)
-    # taberogu_list = []
-    # for i in range(1, 3):
-    #     taberogu_list.append(taberogu.get_shop_name_list(i))
-    
-    # result = []
-    # for i in range(len(taberogu_list)):
-    #     result.append(taberogu.get_shop_info(taberogu_list[i]))
-    # # s = spreadsheet.Spreadsheet(tabegoru_list=taberogu_list)
-    # # s.write_spreadsheet()
-    # for t in result:
-    #     print('-------------------')
-    #     print(t)
-    #     print('-------------------')
+    # taberogu_page_length = taberogu.page_length()
+    # range(1, taberogu_page_length)
+    page_url_list = []
+    for i in range(1, 4):
+        page_url_list.append(taberogu.get_page_url(current_page=i))
+
+    taberogu_list = []
+    for url in page_url_list:
+        taberogu_list.append(taberogu.get_shop_name_list(page_url=url))
+
+    result = []
+    for i in range(len(taberogu_list)):
+        result.append(taberogu.get_shop_info(shop_link_list=taberogu_list[i]))
+
+    # s = spreadsheet.Spreadsheet(tabegoru_list=taberogu_list)
+    # s.write_spreadsheet()
+    for t in result:
+        print('-------------------')
+        print(t)
+        print('-------------------')
 
 if __name__ == "__main__":
     main()
