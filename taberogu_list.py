@@ -1,7 +1,7 @@
 import dataclasses
 
 @dataclasses.dataclass
-class Instalist:
+class TaberoguList:
     shop_name: str
     tel_number: str
     address: str
