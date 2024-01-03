@@ -1,6 +1,7 @@
 import gspread
 import os
 import taberogu_list
+import sys
 
 class Spreadsheet:
     def __init__(self, tabegoru_list: list[taberogu_list.TaberoguList]) -> None:
@@ -12,24 +13,28 @@ class Spreadsheet:
             credentials_filename=os.path.join(dir_path, 'client_secret.json'),
             authorized_user_filename=os.path.join(dir_path, 'authorized_user.json'),
         )
+        area = sys.argv[1]
+        genre = sys.argv[2]
         wb = gc.create('Toridori list')
         print(wb.id)
 
         wb = gc.open_by_key(wb.id)
         ws = wb.get_worksheet(0)
 
-        data = [['店名', '電話番号', '住所', 'Instagram', 'ジャンル', '営業時間', '開店日']]
+        data = [['電話番号', '店名', 'Instagram', '住所', '営業時間', 'ジャンル', '開店日']]
         for taberogu in self.tabegoru_list:
+            print(taberogu)
             data.append(
                 [
-                    taberogu.shop_name,
                     taberogu.tel_number,
-                    taberogu.address,
+                    taberogu.shop_name,
                     taberogu.instagram_link,
-                    taberogu.genre,
+                    taberogu.address,
                     taberogu.business_hours,
+                    taberogu.genre,
                     taberogu.opened_date
                 ]
             )
+        print(data)
 
         ws.append_rows(data)
