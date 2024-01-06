@@ -5,6 +5,8 @@ NAGOYA = "愛知県"
 SAPPORO = "北海道"
 KANAGAWA = "神奈川県"
 HYOGO = "兵庫県"
+KYOTO = "京都府"
+SENDAI = "宮城県"
 
 # 食べログのジャンル候補
 ALL = "すべて"

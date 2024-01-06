@@ -15,7 +15,8 @@ class Spreadsheet:
         )
         area = sys.argv[1]
         genre = sys.argv[2]
-        wb = gc.create('Toridori list')
+        title = 'Toridori list' + ' ' + area + ' ' + genre
+        wb = gc.create(title=title)
         print(wb.id)
 
         wb = gc.open_by_key(wb.id)

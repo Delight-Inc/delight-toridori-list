@@ -32,6 +32,10 @@ class Taberogu:
             return const.KANAGAWA
         elif area == "hyogo":
             return const.HYOGO
+        elif area == "kyoto":
+            return const.KYOTO
+        elif area == "sendai":
+            return const.SENDAI
         else:
             return ""
     
