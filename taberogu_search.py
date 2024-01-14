@@ -36,6 +36,16 @@ class Taberogu:
             return const.KYOTO
         elif area == "sendai":
             return const.SENDAI
+        elif area == "fukuoka":
+            return const.FUKUOKA
+        elif area == "hiroshima":
+            return const.HIROSHIMA
+        elif area == "saitama":
+            return const.SAITAMA
+        elif area == "chiba":
+            return const.CHIBA
+        elif area == "shizuoka":
+            return const.SHIZUOKA
         else:
             return ""
     
@@ -61,21 +71,22 @@ class Taberogu:
 
         self.driver.find_element(By.CLASS_NAME, "sc-kDvujY").click()
 
-    def get_page_url(self, current_page: int) -> str:
-        page_url = self.driver.find_elements(By.CLASS_NAME, "c-pagination__num")
-        for url in page_url:
-            if url.text == str(current_page + 1):
-                return url.get_attribute('href')
-        return ""
+    def get_page_url(self) -> list[str]:
+        res = requests.get(self.driver.current_url)
+        soup = BeautifulSoup(res.text, "html.parser")
+        page_url = soup.find_all("a", class_="c-pagination__num")
+        base_url, params = page_url[0].get("href").split("?", 1)
+        base_url_parts = base_url.rstrip("/").split("/")[:-1]
+        base_url = "/".join(base_url_parts) + "/"
+        url_list = []
+        for page_number in range(2, 51):
+            page_url = f"{base_url}{page_number}/?{params}"
+            url_list.append(page_url)
+            print(f"Fetching page {page_number}: {page_url}")
+        return url_list
     
-    def get_shop_name_list(self, current_page: int) -> list[str]:
-        page_url = self.get_page_url(current_page=current_page)
-        if page_url != "1":
-            self.driver.implicitly_wait(10)
-            self.driver.set_page_load_timeout(10)
-            self.driver.get(page_url) 
-
-        res = requests.get(page_url)
+    def get_shop_name_list(self, current_page_url: str) -> list[str]:
+        res = requests.get(current_page_url)
         soup = BeautifulSoup(res.text, 'html.parser')
         shop_list = soup.find_all("a", class_="list-rst__rst-name-target")
 

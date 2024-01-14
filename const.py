@@ -7,7 +7,11 @@ KANAGAWA = "神奈川県"
 HYOGO = "兵庫県"
 KYOTO = "京都府"
 SENDAI = "宮城県"
-
+FUKUOKA = "福岡県"
+HIROSHIMA = "広島県"
+SAITAMA = "埼玉県"
+CHIBA = "千葉県"
+SHIZUOKA = "静岡県"
 
 # 食べログのジャンル候補
 ALL = "すべて"

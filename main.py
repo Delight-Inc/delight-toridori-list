@@ -32,9 +32,11 @@ def main():
     taberogu.specify_search_info()
     print(taberogu.page_length())
 
+    url_list = taberogu.get_page_url()
+
     taberogu_list = []
-    for i in range(1, 50):
-        taberogu_list.append(taberogu.get_shop_name_list(current_page=i))
+    for url in url_list:
+        taberogu_list.append(taberogu.get_shop_name_list(url))
 
     result = []
     for i in range(len(taberogu_list)):
@@ -49,3 +51,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# https://tabelog.com/fukuoka/rstLst/RC/2/?LstReserve=0&LstSmoking=0&svd=20240112&svt=1900&svps=2&vac_net=0
+# https://tabelog.com/fukuoka/rstLst/RC/3/?LstReserve=0&LstSmoking=0&svd=20240112&svt=1900&svps=2&vac_net=0
