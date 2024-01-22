@@ -23,6 +23,7 @@ jobs:
         pip install requests
         pip install bs4
         pip install selenium
+        pip install gspread
 
     - name: Run Web Scraping Script
       run: python ./main.py tokyo cafe
