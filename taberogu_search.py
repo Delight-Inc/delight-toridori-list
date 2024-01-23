@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import requests
 import taberogu_list
@@ -9,9 +10,11 @@ import const
 
 class Taberogu:
     def __init__(self, area: str, genre: str) -> None:
+        options = Options()
+        options.add_argument('--headless')
         self.area = area
         self.genre = genre
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(options=options)
         self.driver.get('https://tabelog.com/tokyo')
         assert '食べログ' in self.driver.title
 

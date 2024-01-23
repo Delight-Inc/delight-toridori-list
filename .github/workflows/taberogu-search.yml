@@ -15,7 +15,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12.1'  # Use the latest Python version
+        python-version: '3.12.1'
 
     - name: Install Dependencies
       run: |
@@ -29,5 +29,3 @@ jobs:
       run: |
         pip install get-chrome-driver --upgrade
         python ./main.py tokyo cafe
-
-# Add any additional steps or configurations as needed
