@@ -1,8 +1,13 @@
 name: Daily Web Scraping
 
-on: push
-#   schedule:
-#     - cron: '0 13 * * *'  # Run daily at 13:00 UTC
+on:
+  schedule:
+    - cron: '0 13 * * 1'  # Run on Monday at 13:00 UTC
+    - cron: '0 13 * * 2'  # Run on Tuesday at 13:00 UTC
+    - cron: '0 13 * * 3'  # Run on Wednesday at 13:00 UTC
+    - cron: '0 13 * * 4'  # Run on Thursday at 13:00 UTC
+    - cron: '0 13 * * 5'  # Run on Friday at 13:00 UTC
+    - cron: '0 13 * * 6'  # Run on Saturday at 13:00 UTC
 
 jobs:
   web_scraping_job:
@@ -24,8 +29,32 @@ jobs:
         pip install bs4
         pip install selenium
         pip install gspread
+        pip install get-chrome-driver --upgrade
 
     - name: Run Web Scraping Script
       run: |
-        pip install get-chrome-driver --upgrade
-        python ./main.py tokyo cafe
+        if [ "$(date +\%u)" -eq "1" ]; then
+          python main.py tokyo bar
+          python main.py tokyo restaurant
+          python main.py tokyo cafe
+        elif [ "$(date +\%u)" -eq "2" ]; then
+          python main.py osaka restaurant
+          python main.py osaka bar
+          python main.py osaka cafe
+        elif [ "$(date +\%u)" -eq "3" ]; then
+          python main.py nagoya restaurant
+          python main.py nagoya bar
+          python main.py nagoya cafe
+        elif [ "$(date +\%u)" -eq "4" ]; then
+          python main.py kyoto restaurant
+          python main.py kyoto bar
+          python main.py kyoto cafe
+        elif [ "$(date +\%u)" -eq "5" ]; then
+          python main.py sendai restaurant
+          python main.py sendai bar
+          python main.py sendai cafe
+        elif [ "$(date +\%u)" -eq "6" ]; then
+          python main.py sapporo restaurant
+          python main.py sapporo bar
+          python main.py sapporo cafe
+        fi
